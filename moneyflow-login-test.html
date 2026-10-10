@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6C63FF"><title>MoneyFlow | ทดสอบ Google Sign-In</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#26243a;background:#f7f5ff}*{box-sizing:border-box}body{min-height:100dvh;display:grid;place-items:center;margin:0;padding:20px}.card{width:min(100%,440px);background:white;border-radius:28px;padding:36px 25px;box-shadow:0 18px 50px #4e3cc21c;text-align:center}.logo{font-size:54px}h1{margin:8px 0;color:#6c63ff}p{line-height:1.7;color:#6b6881}.badge{background:#f0edff;border-radius:12px;padding:12px;margin:18px 0;font-size:13px}#googleButton{display:flex;justify-content:center;min-height:45px}#result{margin-top:20px;font-size:14px;line-height:1.6;overflow-wrap:anywhere}.warn{color:#9d521a}.ok{color:#16855a}button{border:0;background:#6c63ff;color:white;padding:10px 18px;border-radius:12px;margin-top:12px;cursor:pointer}
+</style>
+</head>
+<body><main class="card"><div class="logo">💜</div><h1>MoneyFlow</h1><p>ทดสอบการเปิดหน้าต่างเข้าสู่ระบบด้วย Google</p><div class="badge">🔒 หน้านี้เป็นเพียงการทดสอบ Google Sign-In<br>ยังไม่เชื่อมข้อมูลการเงิน และยังไม่ให้สิทธิ์เข้าใช้งาน</div><div id="googleButton"></div><div id="result" role="status" aria-live="polite">กำลังโหลดปุ่ม Google…</div><button onclick="location.href='./'">กลับหน้าแอปเดิม</button></main>
+<script>
+const CLIENT_ID='724296755056-dtdpqk5r6vv3b0bfucpps36d5d7b42mr.apps.googleusercontent.com';
+function ready(){
+ if(!window.google?.accounts?.id){setTimeout(ready,200);return;}
+ google.accounts.id.initialize({client_id:CLIENT_ID,callback:({credential})=>{
+   // This is a UI smoke test only. Never treat a browser callback as server-side authentication.
+   document.getElementById('result').innerHTML=credential?'<span class="ok">✅ Google ส่งข้อมูลยืนยันตัวตนกลับมายังหน้าเว็บแล้ว</span><br><span class="warn">ยังไม่ตรวจสอบโทเคนบนเซิร์ฟเวอร์ จึงยังไม่อนุญาตให้เข้าถึงข้อมูลการเงิน</span>':'<span class="warn">ไม่ได้รับข้อมูลยืนยันตัวตน</span>';
+ }});
+ google.accounts.id.renderButton(document.getElementById('googleButton'),{theme:'outline',size:'large',shape:'pill',text:'signin_with',width:270});
+ document.getElementById('result').textContent='กดปุ่ม Google เพื่อทดสอบ';
+}
+ready();
+</script></body></html>
