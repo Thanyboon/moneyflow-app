@@ -1,28 +1,1221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#8b5cf6">
-  <title>MoneyFlow 💜</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MoneyFlow">
+
+  
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6C63FF">
+  <title>MoneyFlow</title>
+
   <style>
-    *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(145deg,#f5efff,#fdfaff);color:#38235c;padding:24px;text-align:center}
-    main{width:min(100%,420px);background:white;border-radius:28px;padding:34px 24px;box-shadow:0 15px 45px #6d4aa31c}
-    .icon{font-size:64px}h1{margin:8px 0;font-size:30px}p{line-height:1.7;color:#6b6080}a.button{display:block;background:#8655e9;color:white;padding:16px;border-radius:16px;text-decoration:none;font-weight:700;margin-top:22px}small{display:block;color:#857a99;margin-top:18px;line-height:1.6}
+    :root {
+      --primary:#6C63FF;
+      --primary2:#8A82FF;
+      --bg:#F6F7FB;
+      --card:#FFFFFF;
+      --text:#20212B;
+      --muted:#8A8D9F;
+      --border:#ECECF2;
+      --green:#2EAD7B;
+      --greenSoft:#E8F8F1;
+      --red:#EF6A78;
+      --redSoft:#FDECEF;
+      --orangeSoft:#FFF3E5;
+      --shadow:0 8px 28px rgba(40,40,70,.08);
+    }
+
+    * {
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html, body {
+      margin:0;
+      min-height:100%;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    body {
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    button,input,select,textarea {
+      font:inherit;
+    }
+
+    button {
+      cursor:pointer;
+    }
+
+    .app {
+      max-width:1100px;
+      margin:auto;
+      padding:
+        calc(20px + env(safe-area-inset-top))
+        20px
+        calc(110px + env(safe-area-inset-bottom));
+    }
+
+    /* HEADER */
+
+    .header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:22px;
+    }
+
+    .hello {
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    h1 {
+      margin:0;
+      font-size:30px;
+      letter-spacing:-1px;
+    }
+
+    .theme-btn {
+      width:48px;
+      height:48px;
+      border:0;
+      border-radius:16px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+      font-size:21px;
+      color:var(--text);
+    }
+
+    /* TOP */
+
+    .top-grid {
+      display:grid;
+      gap:16px;
+    }
+
+    .balance-card {
+      min-height:220px;
+      padding:28px;
+      border-radius:28px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      box-shadow:0 14px 35px rgba(108,99,255,.24);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .balance-card:after {
+      content:"";
+      position:absolute;
+      width:210px;
+      height:210px;
+      border-radius:50%;
+      background:rgba(255,255,255,.09);
+      right:-60px;
+      top:-80px;
+    }
+
+    .balance-label {
+      font-size:14px;
+      opacity:.88;
+    }
+
+    .balance-value {
+      font-size:40px;
+      font-weight:800;
+      margin:10px 0 30px;
+      letter-spacing:-1px;
+    }
+
+    .balance-bottom {
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      font-size:13px;
+    }
+
+    .balance-bottom strong {
+      display:block;
+      font-size:17px;
+      margin-top:5px;
+    }
+
+    /* SUMMARY */
+
+    .summary-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .summary-card {
+      background:var(--card);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      min-height:120px;
+    }
+
+    .summary-icon {
+      width:43px;
+      height:43px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      border-radius:14px;
+      font-size:20px;
+      margin-bottom:12px;
+    }
+
+    .green { background:var(--greenSoft); }
+    .red { background:var(--redSoft); }
+    .orange { background:var(--orangeSoft); }
+    .purple { background:#EEEAFE; }
+
+    .summary-label {
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .summary-value {
+      margin-top:5px;
+      font-size:20px;
+      font-weight:800;
+    }
+
+    /* SECTIONS */
+
+    .dashboard-grid {
+      display:grid;
+      gap:18px;
+    }
+
+    .section {
+      margin-top:25px;
+      min-width:0;
+    }
+
+    .section-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:13px;
+    }
+
+    .section-title {
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .link-btn {
+      border:0;
+      background:none;
+      color:var(--primary);
+      font-size:13px;
+    }
+
+    /* CHART */
+
+    .chart-card {
+      background:var(--card);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .legend {
+      display:flex;
+      gap:15px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .dot {
+      width:8px;
+      height:8px;
+      display:inline-block;
+      border-radius:50%;
+      margin-right:5px;
+    }
+
+    .dot.income { background:#8ED1B2; }
+    .dot.expense { background:#FF9AA5; }
+
+    .chart {
+      height:170px;
+      display:flex;
+      justify-content:space-around;
+      align-items:flex-end;
+      padding-top:20px;
+    }
+
+    .month {
+      flex:1;
+      height:100%;
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:5px;
+    }
+
+    .bar {
+      width:12px;
+      border-radius:8px 8px 3px 3px;
+    }
+
+    .bar.income { background:#8ED1B2; }
+    .bar.expense { background:#FF9AA5; }
+
+    .months {
+      display:flex;
+      justify-content:space-around;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:10px;
+    }
+
+    /* TRANSACTIONS */
+
+    .transactions {
+      background:var(--card);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .transaction {
+      display:flex;
+      align-items:center;
+      padding:15px 16px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .transaction:last-child {
+      border-bottom:0;
+    }
+
+    .transaction-icon {
+      width:44px;
+      height:44px;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--bg);
+      border-radius:14px;
+      margin-right:12px;
+      font-size:20px;
+    }
+
+    .transaction-info {
+      flex:1;
+      min-width:0;
+    }
+
+    .transaction-name {
+      font-weight:700;
+    }
+
+    .transaction-detail {
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .transaction-amount {
+      font-weight:800;
+    }
+
+    .transaction-amount.income {
+      color:var(--green);
+    }
+
+    .empty {
+      padding:42px 20px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .empty .emoji {
+      font-size:35px;
+      margin-bottom:8px;
+    }
+
+    /* NAVIGATION */
+
+    .bottom-nav {
+      position:fixed;
+      z-index:100;
+      bottom:0;
+      left:50%;
+      transform:translateX(-50%);
+      width:100%;
+      max-width:1100px;
+      height:calc(78px + env(safe-area-inset-bottom));
+      padding:7px 14px env(safe-area-inset-bottom);
+      background:rgba(255,255,255,.95);
+      border-top:1px solid var(--border);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      align-items:center;
+    }
+
+    .nav-btn {
+      border:0;
+      background:none;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:4px;
+      font-size:10px;
+      min-height:55px;
+    }
+
+    .nav-btn.active {
+      color:var(--primary);
+      font-weight:700;
+    }
+
+    .nav-icon {
+      font-size:21px;
+    }
+
+    .plus {
+      width:58px;
+      height:58px;
+      border:0;
+      border-radius:19px;
+      background:var(--primary);
+      color:white;
+      font-size:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:-30px auto 0;
+      box-shadow:0 10px 25px rgba(108,99,255,.35);
+    }
+
+    /* MODAL */
+
+    .overlay {
+      position:fixed;
+      inset:0;
+      z-index:1000;
+      background:rgba(15,16,25,.48);
+      backdrop-filter:blur(5px);
+      -webkit-backdrop-filter:blur(5px);
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+    }
+
+    .overlay.show {
+      display:flex;
+    }
+
+    .modal {
+      width:100%;
+      max-width:600px;
+      max-height:92vh;
+      overflow-y:auto;
+      background:var(--card);
+      border-radius:28px 28px 0 0;
+      padding:23px 20px calc(25px + env(safe-area-inset-bottom));
+    }
+
+    .modal-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .modal-title {
+      font-size:22px;
+      font-weight:800;
+    }
+
+    .modal-subtitle {
+      color:var(--muted);
+      font-size:13px;
+      margin-top:3px;
+    }
+
+    .close {
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:13px;
+      background:var(--bg);
+      color:var(--text);
+      font-size:18px;
+    }
+
+    .type-switch {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:7px;
+      padding:5px;
+      background:var(--bg);
+      border-radius:17px;
+      margin-bottom:20px;
+    }
+
+    .type-btn {
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      padding:12px;
+      border-radius:13px;
+      font-weight:800;
+    }
+
+    .type-btn.active-expense {
+      color:var(--red);
+      background:var(--redSoft);
+    }
+
+    .type-btn.active-income {
+      color:var(--green);
+      background:var(--greenSoft);
+    }
+
+    .field {
+      margin-bottom:16px;
+    }
+
+    .field label {
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:7px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width:100%;
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:15px;
+      outline:0;
+      background:var(--bg);
+      color:var(--text);
+      font-size:16px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color:var(--primary);
+    }
+
+    .amount-box {
+      display:flex;
+      align-items:center;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:var(--bg);
+      padding-left:16px;
+    }
+
+    .amount-box span {
+      color:var(--primary);
+      font-size:27px;
+      font-weight:800;
+    }
+
+    .amount-box input {
+      border:0;
+      background:transparent;
+      font-size:29px;
+      font-weight:800;
+    }
+
+    .save-btn {
+      width:100%;
+      border:0;
+      border-radius:17px;
+      padding:15px;
+      background:var(--primary);
+      color:#fff;
+      font-size:16px;
+      font-weight:800;
+      box-shadow:0 9px 22px rgba(108,99,255,.22);
+    }
+
+    .save-btn:disabled {
+      opacity:.55;
+    }
+
+    .status {
+      min-height:22px;
+      text-align:center;
+      margin-top:10px;
+      font-size:13px;
+    }
+
+    /* DARK */
+
+    body.dark {
+      --bg:#111318;
+      --card:#1B1D24;
+      --text:#F5F5F7;
+      --muted:#9A9DAA;
+      --border:#292C34;
+      --shadow:0 8px 28px rgba(0,0,0,.22);
+    }
+
+    body.dark .bottom-nav {
+      background:rgba(27,29,36,.95);
+    }
+
+    /* IPAD */
+
+    @media (min-width:700px) {
+      .app {
+        padding-left:32px;
+        padding-right:32px;
+      }
+
+      .top-grid {
+        grid-template-columns:1.2fr 1fr;
+      }
+
+      .dashboard-grid {
+        grid-template-columns:1fr 1fr;
+      }
+
+      .modal {
+        border-radius:28px;
+      }
+
+      .overlay {
+        align-items:center;
+        padding:30px;
+      }
+    }
+
+    /* GOALS & BUDGETS */
+    .mf-grid{display:grid;gap:14px}.mf-card{background:var(--card);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+    .mf-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.mf-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .mini-btn{border:0;border-radius:12px;padding:9px 12px;font-weight:700;background:#EEEAFE;color:var(--primary)}
+    .mini-btn.danger{background:var(--redSoft);color:var(--red)}.mini-btn.green{background:var(--greenSoft);color:var(--green)}
+    .progress-track{height:12px;background:var(--bg);border-radius:999px;overflow:hidden;margin:12px 0 7px}.progress-fill{height:100%;background:var(--primary);border-radius:999px;min-width:0}
+    .budget-fill{background:var(--green)}.budget-fill.warn{background:#F4A340}.budget-fill.over{background:var(--red)}
+    .pill{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--bg);color:var(--muted);font-size:12px;font-weight:700}
+    .page-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:5px;background:var(--card);border-radius:17px;box-shadow:var(--shadow);margin-bottom:18px}
+    .page-tab{border:0;padding:12px;border-radius:13px;background:transparent;color:var(--muted);font-weight:800}.page-tab.active{background:#EEEAFE;color:var(--primary)}
+
+    .budget-dashboard-box{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
+    .chart .month{position:relative}.chart .bar{min-height:2px;transition:height .35s ease}
+    .reconcile-info{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--bg);font-size:12px;color:var(--muted)}
+    .reconcile-info.match{color:var(--green)}.reconcile-info.diff{color:var(--red)}
+    .v7filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+    .v7filters label{font-size:12px;font-weight:700;display:block}
+    .v7filters input,.v7filters select{display:block;width:100%;padding:11px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);font-size:16px;margin-top:5px}
+    #v7ToolsPage .mf-card{margin-bottom:16px}
   </style>
 </head>
-  <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="MoneyFlow">
-<meta name="theme-color" content="#8B5CF6">
+
 <body>
-  <main>
-    <div class="icon">💜</div>
-    <h1>MoneyFlow</h1>
-    <p>จัดการรายรับ รายจ่าย และเงินออมของคุณ<br>ด้วย MoneyFlow v7</p>
-    <a class="button" href="https://script.google.com/macros/s/AKfycbwAh2Q4xrotgT042MRO4PXmu2g7ePSTGjXPWsJF6TFWFma7XnqQtBji5AY75XsvT3UQ/exec">เปิด MoneyFlow v7 ↗</a>
-    <small>ระบบจะเปิดเว็บแอป Google Apps Script เดิม<br>ข้อมูลยังอยู่ใน Google Sheets ของคุณ</small>
+
+  <main class="app">
+  <div role="status" style="padding:15px 18px;margin-bottom:16px;background:#fff3cd;color:#684f00;border-radius:15px;font-size:14px;line-height:1.5">
+    🧪 <strong>MoneyFlow — ตัวอย่างหน้าแอป (ยังไม่เชื่อมข้อมูล)</strong><br>
+    ตัวเลขที่เห็นเป็นค่าเริ่มต้น ไม่ใช่ยอดเงินจริง ห้ามใช้หน้านี้บันทึกรายการในตอนนี้
+  </div>
+
+    <header class="header">
+      <div>
+        <div class="hello">ภาพรวมการเงินของคุณ</div>
+        <h1>MoneyFlow</h1>
+      </div>
+
+      <button
+        type="button"
+        class="theme-btn"
+        id="themeBtn"
+        onclick="toggleTheme()">
+        🌙
+      </button>
+    </header>
+
+
+    <div class="top-grid">
+
+      <section class="balance-card">
+        <div class="balance-label">
+          ยอดเงินคงเหลือทั้งหมด
+        </div>
+
+        <div class="balance-value" id="totalBalance">
+          —
+        </div>
+
+        <div class="balance-bottom">
+          <div>
+            รายรับเดือนนี้
+            <strong id="monthIncome">—</strong>
+          </div>
+
+          <div>
+            รายจ่ายเดือนนี้
+            <strong id="monthExpense">—</strong>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="summary-grid">
+
+        <div class="summary-card">
+          <div class="summary-icon green">↗️</div>
+          <div class="summary-label">รายรับ</div>
+          <div class="summary-value" id="incomeSummary">—</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon red">↘️</div>
+          <div class="summary-label">รายจ่าย</div>
+          <div class="summary-value" id="expenseSummary">—</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon orange">🎯</div>
+          <div class="summary-label">เงินออม</div>
+          <div class="summary-value" id="savingSummary">—</div>
+        </div>
+
+        <div class="summary-card" onclick="openAccountsPage()" style="cursor:pointer;">
+          <div class="summary-icon purple">👛</div>
+          <div class="summary-label">บัญชี · แตะเพื่อจัดการ</div>
+          <div class="summary-value" id="accountSummary">— บัญชี</div>
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+      <section class="section">
+        <div class="section-head">
+          <div class="section-title">รายรับ & รายจ่าย</div>
+          <button type="button" class="link-btn">เดือนนี้</button>
+        </div>
+
+        <div class="chart-card">
+
+          <div class="legend">
+            <span><i class="dot income"></i>รายรับ</span>
+            <span><i class="dot expense"></i>รายจ่าย</span>
+          </div>
+
+          <div class="chart" id="realChart"><div class="empty" style="width:100%">⏳ กำลังโหลดกราฟ...</div></div>
+          <div class="months" id="realChartMonths"></div>
+
+          <div id="budgetDashboardSummary" class="budget-dashboard-box">
+            <div class="mf-row"><b>💸 งบประมาณเดือนนี้</b><span id="budgetDashboardStatus" class="pill">กำลังโหลด</span></div>
+            <div class="progress-track"><div id="budgetDashboardFill" class="progress-fill budget-fill" style="width:0%"></div></div>
+            <div class="mf-row" style="font-size:13px"><span id="budgetDashboardSpent">ใช้ —</span><span id="budgetDashboardRemaining">เหลือ —</span></div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <section class="section">
+
+        <div class="section-head">
+          <div class="section-title">รายการล่าสุด</div>
+          <button type="button" class="link-btn">ดูทั้งหมด</button>
+        </div>
+
+        <div class="transactions" id="transactionList">
+          <div class="empty">
+            <div class="emoji">🧾</div>
+            <div>ยังไม่มีรายการ</div>
+            <small>กด + เพื่อเพิ่มรายรับหรือรายจ่าย</small>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
   </main>
+
+
+<!-- TRANSACTIONS PAGE -->
+
+<section id="transactionsPage" style="display:none;">
+
+  <div class="app">
+
+    <header class="header">
+
+      <div>
+        <div class="hello">ประวัติการเงินของคุณ</div>
+        <h1>รายการทั้งหมด</h1>
+      </div>
+
+      <button
+        type="button"
+        class="theme-btn"
+        onclick="closeTransactionsPage()">
+        ✕
+      </button>
+
+    </header>
+
+    <div class="section-head">
+
+      <div class="section-title">
+        รายรับ–รายจ่าย
+      </div>
+
+      <div id="transactionCount">
+        0 รายการ
+      </div>
+
+    </div>
+    <div style="margin-bottom:15px;">
+
+  <input
+    type="search"
+    id="transactionSearch"
+    placeholder="🔍 ค้นหา เช่น อาหาร, เงินสด, ค่าเดินทาง..."
+    oninput="filterTransactions()"
+    style="
+      width:100%;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:var(--card);
+      color:var(--text);
+      font-size:16px;
+      outline:none;
+    "
+  >
+
+</div>
+<div
+  id="transactionFilters"
+  style="
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
+    overflow-x:auto;
+  "
+>
+
+  <button
+    type="button"
+    id="filterAll"
+    onclick="setTransactionFilter('ทั้งหมด')"
+    style="
+      border:0;
+      padding:10px 18px;
+      border-radius:14px;
+      background:var(--primary);
+      color:white;
+      font-weight:700;
+      white-space:nowrap;
+    "
+  >
+    ทั้งหมด
+  </button>
+
+  <button
+    type="button"
+    id="filterIncome"
+    onclick="setTransactionFilter('รายรับ')"
+    style="
+      border:1px solid var(--border);
+      padding:10px 18px;
+      border-radius:14px;
+      background:var(--card);
+      color:var(--green);
+      font-weight:700;
+      white-space:nowrap;
+    "
+  >
+    ↗️ รายรับ
+  </button>
+
+  <button
+    type="button"
+    id="filterExpense"
+    onclick="setTransactionFilter('รายจ่าย')"
+    style="
+      border:1px solid var(--border);
+      padding:10px 18px;
+      border-radius:14px;
+      background:var(--card);
+      color:var(--red);
+      font-weight:700;
+      white-space:nowrap;
+    "
+  >
+    ↘️ รายจ่าย
+  </button>
+
+</div>
+    <div class="mf-card" style="margin-bottom:14px">
+      <div class="section-title" style="margin-bottom:10px">🔎 กรองรายการขั้นสูง</div>
+      <div class="v7filters">
+        <label>ตั้งแต่วันที่<input id="v7DateFrom" type="date" onchange="filterTransactions()"></label>
+        <label>ถึงวันที่<input id="v7DateTo" type="date" onchange="filterTransactions()"></label>
+        <label>บัญชี<select id="v7AccountFilter" onchange="filterTransactions()"><option value="">ทุกบัญชี</option></select></label>
+        <label>หมวดหมู่<select id="v7CategoryFilter" onchange="filterTransactions()"><option value="">ทุกหมวดหมู่</option></select></label>
+        <label>จำนวนขั้นต่ำ<input id="v7AmountMin" type="number" min="0" step="0.01" oninput="filterTransactions()" placeholder="0"></label>
+        <label>จำนวนสูงสุด<input id="v7AmountMax" type="number" min="0" step="0.01" oninput="filterTransactions()" placeholder="ไม่จำกัด"></label>
+      </div>
+      <button class="mini-btn" onclick="v7ClearFilters()" style="margin-top:10px">ล้างตัวกรอง</button>
+    </div>
+    <div
+      class="transactions"
+      id="allTransactionList">
+
+      <div class="empty">
+
+        <div class="emoji">
+          ⏳
+        </div>
+
+        <div>
+          กำลังโหลดรายการ...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ACCOUNTS PAGE -->
+<section id="accountsPage" style="display:none;">
+  <div class="app">
+    <header class="header">
+      <div>
+        <div class="hello">กระเป๋าเงินและบัญชีของคุณ</div>
+        <h1>บัญชี</h1>
+      </div>
+      <button type="button" class="theme-btn" onclick="closeAccountsPage()">✕</button>
+    </header>
+
+    <div class="section-head">
+      <div>
+        <div class="section-title">ยอดรวมทุกบัญชี</div>
+        <div id="accountsTotal" style="font-size:28px;font-weight:800;margin-top:6px;">—</div>
+      </div>
+      <button type="button" class="save-btn" onclick="openAccountModal()" style="width:auto;padding:11px 16px;">+ เพิ่มบัญชี</button>
+    </div>
+
+    <div id="accountsList" style="display:grid;gap:12px;">
+      <div class="empty"><div class="emoji">👛</div><div>กำลังโหลดบัญชี...</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- GOALS & BUDGETS PAGE -->
+<section id="goalsPage" style="display:none;">
+  <div class="app">
+    <header class="header"><div><div class="hello">วางแผนเงินของคุณ</div><h1>เป้าหมาย & งบประมาณ</h1></div><button type="button" class="theme-btn" onclick="closeGoalsPage()">✕</button></header>
+    <div class="page-tabs"><button id="goalTabBtn" class="page-tab active" onclick="showGoalTab('goals')">🎯 เป้าหมายเงินออม</button><button id="budgetTabBtn" class="page-tab" onclick="showGoalTab('budgets')">💸 งบประมาณ</button></div>
+    <div id="goalsTab">
+      <div class="section-head"><div><div class="section-title">เป้าหมายเงินออม</div><div class="hello" id="goalsSummary">0 เป้าหมาย</div></div><button class="save-btn" style="width:auto;padding:11px 16px" onclick="openSavingModal()">+ เพิ่มเป้าหมาย</button></div>
+      <div id="savingsList" class="mf-grid"><div class="empty">⏳ กำลังโหลด...</div></div>
+    </div>
+    <div id="budgetsTab" style="display:none;">
+      <div class="section-head"><div><div class="section-title">งบประมาณเดือนนี้</div><div class="hello" id="budgetMonthLabel"></div></div><button class="save-btn" style="width:auto;padding:11px 16px" onclick="openBudgetModal()">+ ตั้งงบ</button></div>
+      <div id="budgetsList" class="mf-grid"><div class="empty">⏳ กำลังโหลด...</div></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="v7ToolsPage" style="display:none;max-width:900px;margin:0 auto;padding:22px 16px 120px">
+ <header class="header"><div><div class="hello">MoneyFlow v7</div><h1>🔄 โอนเงิน & รายการประจำ</h1></div><button class="theme-btn" onclick="v7CloseTools()">✕</button></header>
+ <div class="mf-card"><h3>↔️ โอนเงินระหว่างบัญชี</h3><p class="hello">ไม่เพิ่มรายรับหรือรายจ่าย และไม่กระทบงบประมาณ</p>
+ <div class="v7filters"><label>จากบัญชี<select id="v7From"></select></label><label>ไปบัญชี<select id="v7To"></select></label><label>จำนวนเงิน<input id="v7TransferAmount" type="number" min="0.01" step="0.01" placeholder="0.00"></label><label>วันที่<input id="v7TransferDate" type="date"></label></div>
+ <label>หมายเหตุ<input id="v7TransferNote" placeholder="โอนเข้าธนาคาร" style="width:100%;padding:12px;margin:8px 0"></label>
+ <button class="save-btn" id="v7TransferBtn" onclick="v7SubmitTransfer()">ยืนยันโอนเงิน</button><p id="v7TransferStatus" class="status"></p>
+ <h4>ประวัติการโอน</h4><div id="v7TransferList" class="mf-grid"></div></div>
+ <div class="mf-card" style="margin-top:16px"><h3>🔁 รายการประจำ</h3><p class="hello">เพิ่มรายการตามกำหนดด้วยตนเองเพื่อป้องกันการลงรายการผิดหรือซ้ำ (ยังไม่มีระบบบันทึกอัตโนมัติ)</p>
+ <div class="v7filters"><label>ชื่อรายการ<input id="v7RecName" placeholder="ค่าหอ"></label><label>ประเภท<select id="v7RecType" onchange="v7LoadRecCategories()"><option>รายจ่าย</option><option>รายรับ</option></select></label><label>จำนวนเงิน<input id="v7RecAmount" type="number" min="0.01" step="0.01"></label><label>หมวดหมู่<select id="v7RecCategory"></select></label><label>บัญชี<select id="v7RecAccount"></select></label><label>วันที่ของเดือน (1–31)<input id="v7RecDay" type="number" min="1" max="31" value="1"></label><label>เริ่มวันที่<input id="v7RecStart" type="date"></label><label>สิ้นสุด (ไม่บังคับ)<input id="v7RecEnd" type="date"></label></div>
+ <button class="save-btn" id="v7RecSaveBtn" onclick="v7SaveRecurring()">+ สร้างรายการประจำ</button><p id="v7RecStatus" class="status"></p>
+ <h4>รายการประจำที่ตั้งไว้</h4><div id="v7RecurringList" class="mf-grid"></div></div>
+</section>
+<section id="settingsPage" style="display:none;max-width:900px;margin:0 auto;padding:22px 16px 120px">
+ <header class="header"><div><div class="hello">ปรับแต่งและดูแลข้อมูล</div><h1>⚙️ ตั้งค่า MoneyFlow</h1></div><button type="button" class="theme-btn" onclick="closeSettingsPage()">✕</button></header>
+ <div class="mf-card" style="margin-bottom:16px"><h3>🔄 ฟีเจอร์ MoneyFlow v7</h3><p class="hello">โอนเงินระหว่างบัญชีและจัดการรายการประจำ</p><button class="save-btn" onclick="v7OpenTools()">เปิดโอนเงิน & รายการประจำ</button></div>
+ <div class="mf-card"><h3>🎨 ธีมแอป</h3><div class="mf-row" style="gap:8px;flex-wrap:wrap"><button class="mini-btn" onclick="setV5Theme('light')">☀️ สว่าง</button><button class="mini-btn" onclick="setV5Theme('dark')">🌙 มืด</button><button class="mini-btn" onclick="setV5Theme('system')">📱 ตามอุปกรณ์</button></div><p class="hello" id="themeChoiceLabel"></p></div>
+ <div class="mf-card"><h3>🏷️ จัดการหมวดหมู่</h3><p class="hello">เพิ่ม เปลี่ยนชื่อ หรือลบหมวดหมู่ (ไม่ลบรายการธุรกรรมเดิม)</p><div class="field"><label>ประเภท</label><select id="settingsCategoryType" onchange="renderSettingsCategories()"><option value="รายจ่าย">รายจ่าย</option><option value="รายรับ">รายรับ</option></select></div><div id="settingsCategoryList"></div><div class="field"><label>ชื่อหมวดหมู่ใหม่</label><input id="settingsNewCategory" maxlength="80" placeholder="เช่น สัตว์เลี้ยง"></div><button class="save-btn" onclick="addV5Category()">+ เพิ่มหมวดหมู่</button><p class="status" id="categorySettingsStatus"></p></div>
+ <div class="mf-card"><h3>📤 ส่งออกและสำรองข้อมูล</h3><p class="hello">CSV เปิดด้วย Excel หรือ Google Sheets ได้ ส่วน JSON เป็นสำเนาข้อมูลทุกชีตสำหรับเก็บรักษา</p><div class="mf-row" style="gap:8px;flex-wrap:wrap"><button class="mini-btn" onclick="exportV5Csv()">⬇️ ส่งออกธุรกรรม CSV</button><button class="mini-btn" onclick="backupV5Json()">🗃️ สำรองทั้งหมด JSON</button></div><p class="status" id="exportSettingsStatus"></p><div style="margin-top:14px;border-top:1px solid var(--border,#ddd);padding-top:14px"><h3>🛡️ ตรวจสอบความถูกต้องและกู้คืนอย่างปลอดภัย</h3><p class="hello">ตรวจสอบยอดธุรกรรมและข้อผิดปกติได้โดยไม่เปลี่ยนข้อมูล ส่วนกู้คืนจะสร้างชีต RECOVERY แยกต่างหาก ไม่เขียนทับข้อมูลจริง</p><button class="mini-btn" onclick="v6CheckIntegrity()">🔎 ตรวจสอบข้อมูล</button><p id="v6IntegrityStatus" class="status"></p><label style="display:block;margin-top:12px">เลือกไฟล์สำรอง JSON</label><input type="file" id="v6RestoreFile" accept=".json,application/json" onchange="v6PreviewFile(event)" style="max-width:100%;margin:8px 0"><button class="mini-btn" id="v6StageButton" onclick="v6StageFile()" disabled>🗃️ สร้างชีตกู้คืนแยก (ไม่ทับข้อมูลจริง)</button><p id="v6RestoreStatus" class="status"></p></div><p class="hello">ไฟล์จะถูกบันทึกผ่านเมนูดาวน์โหลด/แชร์ของ Safari บน iPad · การสำรองข้อมูลไม่ลบหรือแก้ไขข้อมูลใน Google Sheets</p></div>
+ <div class="mf-card"><h3>📱 ใช้งานบน iPad</h3><p>เปิดแอปใน Safari → แตะปุ่มแชร์ → เพิ่มไปยังหน้าจอโฮม เพื่อเปิดได้สะดวกเหมือนแอป</p><p class="hello">MoneyFlow v5 · ข้อมูลหลักเก็บใน Google Sheets</p></div>
+</section>
+
+  <!-- NAVIGATION -->
+
+  <nav class="bottom-nav">
+
+    <button type="button" class="nav-btn active">
+      <span class="nav-icon">🏠</span>
+      <span>หน้าหลัก</span>
+    </button>
+
+    <button
+  type="button"
+  class="nav-btn"
+  onclick="openTransactionsPage()">
+  <span class="nav-icon">📊</span>
+  <span>รายการ</span>
+</button>
+
+    <button
+      type="button"
+      class="nav-btn"
+      id="addButton"
+      onclick="openTransactionModal()">
+      <span class="plus">+</span>
+    </button>
+
+    <button type="button" class="nav-btn" onclick="openGoalsPage()">
+      <span class="nav-icon">🎯</span>
+      <span>เป้าหมาย</span>
+    </button>
+
+    <button type="button" class="nav-btn" onclick="openSettingsPage()">
+      <span class="nav-icon">⚙️</span>
+      <span>ตั้งค่า</span>
+    </button>
+
+  </nav>
+
+
+  <!-- ADD TRANSACTION -->
+
+  <div class="overlay" id="transactionModal">
+
+    <div class="modal">
+
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">เพิ่มรายการ</div>
+          <div class="modal-subtitle">
+            บันทึกรายรับหรือรายจ่าย
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="close"
+          onclick="closeTransactionModal()">
+          ✕
+        </button>
+      </div>
+
+
+      <div class="type-switch">
+
+        <button
+          type="button"
+          class="type-btn active-expense"
+          id="expenseBtn"
+          onclick="selectType('รายจ่าย')">
+          รายจ่าย
+        </button>
+
+        <button
+          type="button"
+          class="type-btn"
+          id="incomeBtn"
+          onclick="selectType('รายรับ')">
+          รายรับ
+        </button>
+
+      </div>
+
+
+      <div class="field">
+        <label>จำนวนเงิน</label>
+
+        <div class="amount-box">
+          <span>฿</span>
+
+          <input
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            id="amount"
+            placeholder="0.00">
+        </div>
+      </div>
+
+
+      <div class="field">
+        <label>หมวดหมู่</label>
+
+        <select id="category">
+          <option value="">เลือกหมวดหมู่</option>
+        </select>
+      </div>
+
+
+      <div class="field">
+        <label>บัญชี / กระเป๋าเงิน</label>
+
+        <select id="account">
+          <option value="">กำลังโหลดบัญชี...</option>
+        </select>
+      </div>
+
+
+      <div class="field">
+        <label>วันที่</label>
+        <input type="date" id="date">
+      </div>
+
+
+      <div class="field">
+        <label>หมายเหตุ</label>
+
+        <textarea
+          id="note"
+          rows="3"
+          placeholder="เช่น ค่าอาหารกลางวัน"></textarea>
+      </div>
+
+
+      <button
+        type="button"
+        class="save-btn"
+        id="saveBtn"
+        onclick="saveTransaction()">
+        บันทึกรายการ
+      </button>
+
+      <div class="status" id="status"></div>
+
+    </div>
+
+  </div>
+
+
+
+<!-- ADD ACCOUNT -->
+<div class="overlay" id="accountModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div id="accountModalTitle" style="font-size:22px;font-weight:800;">เพิ่มบัญชี</div>
+        <div class="modal-subtitle">เช่น K PLUS, SCB, เงินสด หรือ E-Wallet</div>
+      </div>
+      <button type="button" class="close" onclick="closeAccountModal()">✕</button>
+    </div>
+
+    <div class="field">
+      <label>ชื่อบัญชี</label>
+      <input type="text" id="accountName" placeholder="เช่น K PLUS">
+    </div>
+
+    <div class="field">
+      <label>ประเภทบัญชี</label>
+      <select id="accountType">
+        <option value="Bank">🏦 ธนาคาร</option>
+        <option value="Cash">💵 เงินสด</option>
+        <option value="E-Wallet">📱 E-Wallet</option>
+        <option value="Other">👛 อื่น ๆ</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>ยอดเริ่มต้น</label>
+      <div class="amount-box">
+        <span>฿</span>
+        <input type="number" inputmode="decimal" step="0.01" id="openingBalance" value="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>หมายเหตุ</label>
+      <textarea id="accountNote" rows="2" placeholder="ไม่บังคับ"></textarea>
+    </div>
+
+    <button type="button" class="save-btn" id="saveAccountBtn" onclick="saveAccount()">เพิ่มบัญชี</button>
+    <div class="status" id="accountStatus"></div>
+  </div>
+</div>
+
+
+
+<!-- SAVING GOAL MODAL -->
+<div class="overlay" id="savingModal"><div class="modal">
+  <div class="modal-header"><div><div id="savingModalTitle" class="modal-title">เพิ่มเป้าหมาย</div><div class="modal-subtitle">กำหนดเป้าหมายการออม</div></div><button class="close" onclick="closeSavingModal()">✕</button></div>
+  <div class="field"><label>ชื่อเป้าหมาย</label><input id="goalName" placeholder="เช่น ซื้อ iPad"></div>
+  <div class="field"><label>ยอดเป้าหมาย</label><div class="amount-box"><span>฿</span><input type="number" inputmode="decimal" min="0" step="0.01" id="goalTarget" placeholder="0.00"></div></div>
+  <div class="field"><label>ออมแล้ว</label><div class="amount-box"><span>฿</span><input type="number" inputmode="decimal" min="0" step="0.01" id="goalSaved" value="0"></div></div>
+  <div class="field"><label>วันที่เป้าหมาย</label><input type="date" id="goalDate"></div>
+  <div class="field"><label>หมายเหตุ</label><textarea id="goalNote" rows="2" placeholder="ไม่บังคับ"></textarea></div>
+  <button class="save-btn" id="saveGoalBtn" onclick="saveSavingGoal()">บันทึกเป้าหมาย</button><div class="status" id="goalStatus"></div>
+</div></div>
+
+<!-- ADD SAVING MONEY MODAL -->
+<div class="overlay" id="addSavingMoneyModal"><div class="modal">
+  <div class="modal-header"><div><div class="modal-title">เพิ่มเงินออม</div><div class="modal-subtitle" id="addSavingGoalName"></div></div><button class="close" onclick="closeAddSavingMoneyModal()">✕</button></div>
+  <div class="field"><label>จำนวนเงินที่เพิ่ม</label><div class="amount-box"><span>฿</span><input type="number" inputmode="decimal" min="0" step="0.01" id="savingAddAmount" placeholder="0.00"></div></div>
+  <button class="save-btn" onclick="submitAddSavingMoney()">เพิ่มเงินออม</button><div class="status" id="addSavingStatus"></div>
+</div></div>
+
+<!-- BUDGET MODAL -->
+<div class="overlay" id="budgetModal"><div class="modal">
+  <div class="modal-header"><div><div class="modal-title">ตั้งงบประมาณ</div><div class="modal-subtitle">งบรายจ่ายแยกตามหมวดหมู่</div></div><button class="close" onclick="closeBudgetModal()">✕</button></div>
+  <div class="field"><label>หมวดหมู่</label><select id="budgetCategory"></select></div>
+  <div class="field"><label>เดือน</label><input type="month" id="budgetMonth"></div>
+  <div class="field"><label>งบประมาณ</label><div class="amount-box"><span>฿</span><input type="number" inputmode="decimal" min="0" step="0.01" id="budgetAmount" placeholder="0.00"></div></div>
+  <button class="save-btn" onclick="saveBudget()">บันทึกงบประมาณ</button><div class="status" id="budgetStatus"></div>
+</div></div>
+
+
+<div class="overlay" id="reconcileModal"><div class="modal">
+  <div class="modal-header"><div><div class="modal-title">กระทบยอดบัญชี</div><div class="modal-subtitle" id="reconcileAccountName">ตรวจยอดกับแอปธนาคาร</div></div><button class="close" onclick="closeReconcileModal()">✕</button></div>
+  <div class="mf-card" style="margin-bottom:16px"><div class="mf-row"><span>ยอดใน MoneyFlow</span><b id="reconcileCalculated">—</b></div></div>
+  <div class="field"><label>ยอดเงินจริงในบัญชี</label><div class="amount-box"><span>฿</span><input type="number" inputmode="decimal" step="0.01" id="reconcileActual" placeholder="0.00"></div></div>
+  <button class="save-btn" onclick="saveReconcile()">ตรวจสอบส่วนต่าง</button><div class="status" id="reconcileStatus"></div>
+</div></div>
+
+  <script>
+// Phase 1: local visual preview only. No financial data or network calls.
+document.addEventListener('click', function(event) {
+  const btn=event.target.closest('button,[onclick]');
+  if (!btn) return;
+  event.preventDefault(); event.stopImmediatePropagation();
+  if (btn.id === 'themeBtn') { document.body.classList.toggle('dark'); return; }
+  alert('โหมดตัวอย่าง: ยังไม่เชื่อมข้อมูลจริง เพื่อความปลอดภัย
+โปรดใช้ MoneyFlow เดิมสำหรับบันทึกข้อมูลในระหว่างนี้');
+}, true);
+</script>
+
 </body>
 </html>
